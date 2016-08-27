@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="img/favicon.png">
+        <title>Yatuhashi Blog</title>
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../static/css/simplePagination.css" rel="stylesheet">
+        <link href="../static/css/alice-tech.css" rel="stylesheet">
+    </head>
+    <body>
+        <script src="../static/js/jquery.min.js"></script>
+        <script src="../static/js/bootstrap.min.js' %}"></script>
+        <script src="../static/js/jquery.simplePagination.js"></script>
+
+   <nav class="navbar navbar-default navbar-origin" role="navigation">
+     <div class="container-fluid">
+       <!-- スマートフォンサイズで表示されるメニューボタンとテキスト -->
+       <div class="navbar-header">
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-menu-4">
+           <span class="sr-only">Toggle navigation</span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <!-- タイトルなどのテキスト -->
+         <a class="navbar-brand" href="/">Yatuhashi Blog</a>
+       </div>
+       <!-- グローバルナビの中身 -->
+       <div class="collapse navbar-collapse" id="nav-menu-4">
+         <!-- 各ナビゲーションメニュー -->
+         <ul class="nav navbar-nav navbar-right">
+           <!-- 通常のリンク -->
+           <li><a href="/memo/">Memo</a></li>
+         </ul>
+       </div>
+     </div>
+   </nav>
+
+
+<div class="container">
+    <p>検証環境構築での出来事です.作業記録として残しておきます.</p>
+    <p>検証用の機材として、</p>
+    <p>最近、shuttleが出したDH170というべアボーンを購入しました.
+    以下、他に購入したもの</p>
+    <ul>
+        <li>CPU skylake i7 6700</li>
+        <li>メモリ16GB</li>
+        <li>m.2 SSD 500GB</li>
+    </ul>
+    <p>よし、Esxiをインストールして、検証しよう！！.....として出来なかった(´･ω･・`)<br>
+        まず、、起動しない(´；ω；`)<br><br>
+    凡庸ドライバー？をisoに組み込んでインストールすれば、起動するらしいという記事をみて、トライ！<br>
+    起動し、一応動くようにはなったがNICがGigabitで認識されてない！？<br><br>
+    それにこのべアボーンキット、Intel i211+i219LM デュアルLAN  元々、intelのNICが二つ、ついてるんです.<br>
+    でも、一つしか見えない(ρд-)</p><br><br>
+    <p>ここから、試行錯誤、四苦八苦して正当法？でうまくいきました。それを紹介します。<br>
+    １. VMware社が出してる<a href="http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&amp;cmd=displayKC&amp;externalId=2077152">サイト</a>を目を皿のようにして読み込み、実行する<br>
+    ２. 次に１のVMware 互換性ガイドから手に入れた情報を検索する(What are you looking for:の隣をIO devicesに)</p>
+    <p>さて、ここでボクが検索して出てきた情報はこれだった.<br>
+    <img src="images/esxi-nic/211.png" alt="tree">
+    <img src="images/esxi-nic/219.png" alt="tree"></p><br>
+    <p>ふむぅ、２つのNICを認識してくれるのは5.5U3だけだった(´･ω･`)<br>
+    とりあえず、5.5U3をインストールすると...お？普通に起動した。</p>
+    <p>が、しかし...?<br>
+    NICが１つしか認識されてなかった。でも、Gigabit、全二重でちゃんと認識されてて嬉しい(〃^∇^)o☆<br>
+    あと、一つ、めげずに頑張った.そこで一つの<a href="http://www.v-front.de/2015/10/vmware-introduces-support-for-intel.html">サイト</a>を見つけた.
+    このサイトの</p>
+    <p>i211がない場合</p>
+    <pre><code>
+esxclxcli software acceptance set --level=CommunitySupported
+esxcli network firewall ruleset set -e true -r httpClient
+esxcli software vib install -n net-igb -d https://vibsdepot.v-front.de
+    </code></pre><p>i219LMがない場合</p>
+    <pre><code>
+esxcli network firewall ruleset set -e true -r httpClient
+esxcli software profile update -d https://hostupdate.vmware.com/software/VUM/PRODUCTION/main/vmw-depot-index.xml -p ESXi-5.5.0-20151004001-standard
+    </code></pre><p>を打ち、Esxiをリブートしたら、無事２つのNICが認識された.<br>
+    よかった(<em>´∀`</em>)検証前の段階に大分、悩み時間をかけてしまった...<br>
+    たぶん、調べ方とかは参考になるので、どうぞ</p>
+
+</div>
+
+
+    </body>
+</html>
+
+

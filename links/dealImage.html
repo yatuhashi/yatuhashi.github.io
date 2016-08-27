@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="img/favicon.png">
+        <title>Yatuhashi Blog</title>
+        <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../static/css/simplePagination.css" rel="stylesheet">
+        <link href="../static/css/alice-tech.css" rel="stylesheet">
+    </head>
+    <body>
+        <script src="../static/js/jquery.min.js"></script>
+        <script src="../static/js/bootstrap.min.js' %}"></script>
+        <script src="../static/js/jquery.simplePagination.js"></script>
+
+   <nav class="navbar navbar-default navbar-origin" role="navigation">
+     <div class="container-fluid">
+       <!-- スマートフォンサイズで表示されるメニューボタンとテキスト -->
+       <div class="navbar-header">
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-menu-4">
+           <span class="sr-only">Toggle navigation</span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <!-- タイトルなどのテキスト -->
+         <a class="navbar-brand" href="/">Yatuhashi Blog</a>
+       </div>
+       <!-- グローバルナビの中身 -->
+       <div class="collapse navbar-collapse" id="nav-menu-4">
+         <!-- 各ナビゲーションメニュー -->
+         <ul class="nav navbar-nav navbar-right">
+           <!-- 通常のリンク -->
+           <li><a href="/memo/">Memo</a></li>
+         </ul>
+       </div>
+     </div>
+   </nav>
+
+
+<div class="container">
+
+<h2><font color="#ff844a">画像処理：いんぺいんてぃんぐ？</font></h2>
+今回は大学のセミナーで少しだけ画像処理をやったので、それを紹介しようと思います.<br>
+目的は、画像内の任意のものを消す事.インペインティングと呼ばれる技術らしいです.<br>
+※総計３日ほど、取り組んだだけなので、もっといい方法があれば教えてください.<br>
+※非力なノーパソで処理したので、もう少しパワーのあるマシンで処理すれば、もっと綺麗になるかも<br>
+(処理を軽くするため、処理後はサイズがおかしく.....サイズくらい合わせればよかった)<br>
+<br>
+使ったモノ<br>
+<ul>
+ <li>python</li>
+ <li>numpy</li>
+ <li>openCV</li>
+</ul>
+
+<h3><font color="#ff844a">1.画像内の文字を消してみようかと思います.</font></h3>
+消したい画像がこれです。<br><br>
+
+<img src="images/imageblog/cat1.png" alt="tree">
+<img src="images/imageblog/hima1.png" alt="tree">
+<br>
+
+
+この画像の文字(ねこ,ひまわり)だけを消します<br>
+<br>
+<h4>では、消すためのアルゴリズムを説明します</h4>
+
+<ul>
+    <li>1. メディアンフィルターをかけます</li>
+    <li>2. Adaptive  Bilateral Filterをかけます</li>
+    <li>3. 1.2を１０回ほど繰り返します</li>
+    <li>4. 元の画像の文字部分だけを処理した画像と入れ替えます</li>
+    <li>5. 1~4をいい感じに消えるまで繰り返します</li>
+</ul>
+
+
+
+<h4><font color="#ff844a">ソースコード</font></h4>
+
+<pre><code>
+
+
+# -*- coding:utf-8 -*-
+import numpy
+from PIL import Image
+import random
+import cv2
+
+def deal(img):
+    for i in range(10):
+        img=cv2.medianBlur(img,3)
+        img=cv2.adaptiveBilateralFilter(img,(7,7),7)
+    return img
+
+def redo():
+    ori = Image.open("ori3.png").convert("RGB")
+    ori=ori.resize((300,300))
+    oriArray = numpy.asarray(ori)
+
+    img = Image.open("10med_ad.png").convert("RGB")
+    img=img.resize((300,300))
+    imgArray = numpy.asarray(img)
+    maxrow=300
+    maxcol=300
+    oriArray.flags.writeable = True
+    imgArray.flags.writeable = True
+    for i in range(maxrow):
+        for j in range(maxcol):
+            if  oriArray[i,j][0]>=180 and oriArray[i,j][1]<=180 and oriArray[i,j][2]<=220:
+                oriArray[i,j][0] = imgArray[i-1,j][0]#R
+                oriArray[i,j][1] = imgArray[i-1,j][1]#G
+                oriArray[i,j][2] = imgArray[i-1,j][2]#B
+            if  oriArray[i,j][0]>=130 and oriArray[i,j][1]<=80 and oriArray[i,j][2]<=80:
+                oriArray[i,j][0] = imgArray[i-1,j][0]#R
+                oriArray[i,j][1] = imgArray[i-1,j][1]#G
+                oriArray[i,j][2] = imgArray[i-1,j][2]#B
+
+    img = Image.fromarray(numpy.uint8(oriArray)) #NumpyToPIL
+    img.show()
+    img.save('done.png', 'PNG')
+
+def main():
+    img=cv2.imread("ori3.png")
+    img=deal(img)
+    img=cv2.resize(img,(800,800))
+    cv2.imshow('tako',img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    cv2.imwrite('10med_ad.png',img)
+    redo()
+
+    for i in range(10):
+        img=cv2.imread("done.png")
+        img=deal(img)
+        cv2.imwrite('10med_ad.png',img)
+        redo()
+
+if __name__ == "__main__":
+        main()
+
+
+
+</pre></code>
+
+
+<h4>結果がこれになります</h4>
+
+
+<img src="images/imageblog/cat2.png" alt="tree">
+<img src="images/imageblog/hima2.png" alt="tree">
+<br>
+
+この方法のいいところは、文字があった所にいい感じの色が補間され、Adaptive Bilateral Filterをかけたために文字周りのエッジがしっかり残る事です.<br>
+<br>
+<h3><font color="#ff844a">2.画像内の人を消してみようかと思います.</font></h3>
+
+
+<br>
+消したい画像はこれ<br>
+
+<img src="images/imageblog/ori.jpg" alt="tree">
+
+<br>
+まず、消したい所を判定しやすい色で塗りつぶします<br>
+
+<img src="images/imageblog/red.jpg" alt="tree">
+
+<br>
+先ほどと同じ方法で処理した結果<br>
+
+<img src="images/imageblog/olddeal.png" alt="tree">
+
+
+
+<br>
+さすがにこれほど、大きなものを消すことはできませんでした.<br>
+そこで軽く自分でパッチをあててから処理.<br>
+アルゴリズムは同じ.<br>
+
+<br>
+パッチをあてた画像<br>
+
+てきとーにまわりのものをコピペしただけです<br>
+<img src="images/imageblog/patch.png" alt="tree">
+<br>
+
+
+<h4>処理結果</h4>
+
+<img src="images/imageblog/done.png" alt="tree">
+
+
+<br>
+うーん？まぁまぁ？<br>
+頭があった人混みは無理ぽ<br>
+
+
+<br>
+今回は以上です<br>
+
+
+
+</div>
+
+
+    </body>
+</html>
