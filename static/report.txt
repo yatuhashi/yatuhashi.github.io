@@ -1,0 +1,68 @@
+
+民間による情報共有は、どうなっているのか？
+
+Twitter社
+https://support.twitter.com/articles/266222?lang=ja
+情報開示関して
+https://support.twitter.com/articles/266222?lang=ja#7
+基本的には合衆国法に基づき開示される
+刑事共助条約には従う
+
+過去に一度、名誉毀損で開示が行われている。刑事共助だが、名誉毀損は、民事である.
+
+Facebookの開示要求の履歴
+https://wired.jp/2013/08/29/facebook-divulged-user-data/
+
+Facebook公式
+https://www.facebook.com/safety/groups/law/guidelines/
+
+刑事共助条約(MLAT)
+Facebookはアメリカの会社である。日本や他の国にサーバーやデータがあったとしても、http://www.mofa.go.jp/mofaj/gaiko/treaty/treaty159_3.htmlのっとり開示される。
+日本で法務大臣若しくは国家公安委員会又はこれらがそれぞれ指定する者にアメリカの司法長官又は同長官が指定する者に開示請求する権利がある.
+政治的な不都合や犯罪条件に適合しないと判断した場合は、共助する必要がない.
+
+日本と欧州連合との刑事共助条約
+http://www.mofa.go.jp/mofaj/gaiko/treaty/shomei_47.html
+
+トランプの新しい移民データベースポリシー
+https://www.theguardian.com/us-news/2017/may/26/us-immigration-crime-database-victim-data-exposed
+
+結局、今は刑事による情報開示しか行っていない?
+
+European Parliament: 欧州議会
+council 上院
+European commission:欧州委員会 下院
+
+EU[ Transfer of Air Passenger Name Record (PNR) Data and Terrorist Finance Tracking Programme (TFTP)]
+http://ec.europa.eu/justice/data-protection/international-transfers/pnr-tftp/pnr-and-tftp_en.htm
+
+EU[ Protecting your personal data  ]
+http://ec.europa.eu/justice/data-protection/individuals/index_en.html
+
+Directive on privacy and electronic communications
+http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2002:201:0037:0047:en:PDF
+
+
+カナダでのPNR見直し
+http://www.sophieintveld.eu/eu-canada-pnr-agreement-advice-to-european-court-re-affirms-legal-concerns/
+欧州議会の人いわく(http://www.europarl.europa.eu/meps/en/28266/SOPHIA_IN+'T+VELD_home.html)
+"""
+個人データを使用する目的が十分に限定されておらず、最高5年間のデータ保管期間が必要であるという客観的根拠に基づいて正当化されていないことを強調している。
+さらに、PNRデータの使用が合法的に犯罪やテロの疑いがある人を対象としている場合には、この協定は基本権憲章とのみ適合するとの意見がある
+
+我々は、裁判所がAdvocate Generalと同じ結論に至るかどうかを迅速に知る必要があります。裁判所は、合意の法的根拠が、プライバシー16条に補足されなければならないとも述べています
+
+裁判所の判決は拘束力がないものの、個人データの広範な使用に関する他の規則や合意には大きな影響を及ぼす可能性がある
+
+2006年のPNR、Schrems、データ保有裁定の後、これは厄介な法律制定が逆効果であることを示している。セキュリティ対策は法的に健全であり、法廷で立ちなければならない
+
+リベラルにとっては、個人データの保管と転送が正しく行われ、厳密に必要な範囲を超えないことが重要です。擁護大将の意見では、テロと重大な犯罪との戦いを目的とした個人データの使用は合法であると明言しているが、特定の保護手段と制限を尊重しなければならない
+"""
+→テロへの個人データの利用は合法、しかし、それ以外に使用する時に目的が限定されず汎用的すぎるために違憲であるとしている。
+
+
+
+
+
+
+
